@@ -30,7 +30,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let apiKey = '{{ env('OMDB_API_KEY') }}';  // Replace with your actual OMDb API key
+        let apiKey = "{{ config('services.omdb.api_key') }}";
         let currentPage = 1;
         let currentQuery = '';
 

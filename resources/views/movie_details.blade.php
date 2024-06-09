@@ -39,7 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const apiKey = '{{ env('OMDB_API_KEY') }}';  // Replace with your actual OMDb API key
+            const apiKey = "{{ config('services.omdb.api_key') }}"  // Replace with your actual OMDb API key
             const imdbId = '{{ $imdbId }}';
 
             fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbId}`)
