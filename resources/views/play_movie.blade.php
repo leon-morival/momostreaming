@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Play Movie</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
 </head>
-<body>
+<body >
     @include('layouts.navbar')
     <div class="container mt-4">
         <h1 class="text-center" id="movieTitle">Play Movie</h1>

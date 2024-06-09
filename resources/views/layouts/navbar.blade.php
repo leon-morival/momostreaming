@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}"><strong>Dreamer</strong></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +12,7 @@
             </ul>
             <form class="d-flex" id="searchForm">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <button class="btn btn-outline-danger" type="submit">Search</button>
             </form>
             @auth
                 <ul class="navbar-nav ml-auto">
@@ -30,14 +30,7 @@
                             </li>
                         </ul>
                     </li>
-                    @if(Auth::user()->hasRole('admin'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.users.index') }}">Manage Users</a>
-                        </li>
-                    @endif
+                    
                 </ul>
             @endauth
             @guest
