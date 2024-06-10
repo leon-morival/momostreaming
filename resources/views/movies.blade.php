@@ -4,60 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movies List</title>
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=abeezee:400|aboreto:400|abril-fatface:400" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-   <style>
-       
+    <style>
+        .movie-card {
+            margin-bottom: 30px;
+        }
+        .movie-card img {
+            width: 100%;
+            height: auto;
+        }
+        .movie-info {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+        .movie-info h5 {
+            margin: 0;
+        }
+        .movie-info .rating {
+            float: right;
+            font-size: 1.2rem;
+            color: #ffc107;
+        }
     </style>
 </head>
 <body>
     @include('layouts.navbar')
-    <h1 class="text-center text-white titles mt-4">Movies</h1>
     <div class="container mt-4">
-        <div class="row" id="moviesList">
-            <!-- Movie cards will be appended here -->
-        </div>
-        <nav aria-label="Page navigation">
-          <ul class="pagination" id="pagination">
-            <!-- Pagination items will be appended here -->
-          </ul>
-        </nav>
+        <h1 class="text-center text-white titles mt-4">Movies</h1>
+        <div class="row" id="moviesList"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let apiKey = "{{ config('services.omdb.api_key') }}";
-        let currentPage = 1;
-        let currentQuery = '';
+        const API_KEY = '{{ config('services.tmdb.api_key') }}';
+        const BASE_URL = 'https://api.themoviedb.org/3';
+        const API_URL = `${BASE_URL}/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`;
+        const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
         document.addEventListener("DOMContentLoaded", function() {
-            const searchForm = document.getElementById('searchForm');
-            searchForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                currentQuery = document.getElementById('searchInput').value.toLowerCase();
-                currentPage = 1;
-                fetchMovies(currentQuery, currentPage);
-            });
-
-            // Fetch initial set of movies
-            currentQuery = 'popular';  // Default search query
-            fetchMovies(currentQuery, currentPage);
+            fetchMovies(API_URL);
         });
 
-        function fetchMovies(query, page) {
-            fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${query}&page=${page}`)
+        function fetchMovies(url) {
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.Response === "True") {
-                        fetchMovieDetails(data.Search);
-                        setupPagination(data.totalResults, page);
+                    if (data.results && data.results.length > 0) {
+                        displayMovies(data.results);
                     } else {
-                        console.error('No movies found:', data.Error);
-                        showError(`No movies found: ${data.Error}`);
+                        console.error('No movies found:', data.status_message);
+                        showError('No movies found.');
                     }
                 })
                 .catch(error => {
@@ -66,58 +65,26 @@
                 });
         }
 
-        function fetchMovieDetails(movies) {
+        function displayMovies(movies) {
             const moviesList = document.getElementById('moviesList');
             moviesList.innerHTML = '';
 
             movies.forEach(movie => {
-                fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}`)
-                    .then(response => response.json())
-                    .then(details => {
-                        if (details.Response === "True") {
-                            const movieCard = `
-                                <div class="col-md-4 mb-4">
-                                    <div class="card h-100 shadow-sm">
-                                        <img src="${details.Poster !== 'N/A' ? details.Poster : 'default_image_url.jpg'}" class="card-img-top" alt="${details.Title}">
-                                        <div class="card-body text-white">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <h5 class="card-title">${details.Title}</h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">${details.Year}</h6>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <div class="position-absolute text-white">
-                                                        <i class="fa-solid fa-star"></i><span>${details.imdbRating ? details.imdbRating : 'N/A'}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="/movies/${details.imdbID}" class="btn btn-danger mt-2">More Info</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            moviesList.innerHTML += movieCard;
-                        } else {
-                            console.error('Error fetching movie details:', details.Error);
-                        }
-                    })
-                    .catch(error => console.error('Error fetching movie details:', error));
-            });
-        }
-
-        function setupPagination(totalResults, currentPage) {
-            const totalPages = Math.ceil(totalResults / 10);  // OMDb API returns 10 results per page
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                const paginationItem = `
-                    <li class="page-item ${i === currentPage ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="event.preventDefault(); fetchMovies('${currentQuery}', ${i})">${i}</a>
-                    </li>
+                const movieCard = `
+                    <div class="col-md-3 movie-card">
+                        <div class="card h-100">
+                            <a href="/play_movie/${movie.id}">
+                                <img src="${movie.poster_path ? IMG_URL + movie.poster_path : 'http://via.placeholder.com/1080x1580'}" class="card-img-top" alt="${movie.title}">
+                            </a>
+                            <div class="card-body movie-info">
+                                <h5 class="card-title">${movie.title}</h5>
+                                <span class="rating">${ movie.vote_average ? Math.round(movie.vote_average *10)/10: 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
                 `;
-                pagination.innerHTML += paginationItem;
-            }
+                moviesList.innerHTML += movieCard;
+            });
         }
 
         function showError(message) {

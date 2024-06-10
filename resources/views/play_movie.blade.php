@@ -29,7 +29,7 @@
         <div class="row mt-4">
             <div class="col-12">
                 <div class="ratio ratio-16x9">
-                    <iframe id="moviePlayer" src="" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts"></iframe>
+                    <iframe id="moviePlayer" src="" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -38,15 +38,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const apiKey = "{{ config('services.omdb.api_key') }}";
-            const imdbId = '{{ $imdbId }}';
+            const API_KEY = "{{ config('services.tmdb.api_key') }}";
+            const movieId = '{{ $id }}';
 
-            fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbId}`)
+            fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.Response === "True") {
-                        document.getElementById('movieTitle').textContent = data.Title;
-                        document.getElementById('moviePlayer').src = `https://vidsrc.to/embed/movie/${imdbId}`;
+                    if (data) {
+                        document.getElementById('movieTitle').textContent = data.title;
+                        document.getElementById('moviePlayer').src = `https://vidsrc.to/embed/movie/${movieId}`;
                     } else {
                         document.body.innerHTML = '<h1 class="text-center">Movie not found</h1>';
                     }

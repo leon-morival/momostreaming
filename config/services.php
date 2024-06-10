@@ -27,8 +27,8 @@ return [
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],
-    'omdb' => [
-        'api_key' => env('OMDB_API_KEY'),
+    'tmdb' => [
+        'api_key' => env('TMDB_API_KEY'),
     ],
     'slack' => [
         'notifications' => [

@@ -9,13 +9,11 @@ Route::get('/', function () {
     return view('movies');
 })->middleware('auth');
 
-Route::get('/movies/{imdbId}', function ($imdbId) {
-    return view('movie_details', ['imdbId' => $imdbId]);
-})->middleware('auth');
 
-Route::get('/play/{imdbId}', function ($imdbId) {
-    return view('play_movie', ['imdbId' => $imdbId]);
-})->middleware('auth');
+Route::get('/play_movie/{id}', function ($id) {
+    return view('play_movie', ['id' => $id]);
+})->name('play_movie');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
