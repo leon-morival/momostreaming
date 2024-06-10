@@ -32,30 +32,95 @@
 </head>
 <body>
     @include('layouts.navbar')
-    <div class="container mt-4">
-        <h1 class="text-center text-white titles mt-4">Movies</h1>
-        <div class="row" id="moviesList"></div>
+    <div class="container mt-5">
+        
+   
+        
+        <div id="carousels">
+            <h2 class="text-white">Popular Movies</h2>
+            <div id="popularMoviesCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="popularMoviesList"></div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#popularMoviesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#popularMoviesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <h2 class="text-white mt-4">Action Movies</h2>
+            <div id="ActionMovieCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="actionMoviesList"></div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#ActionMovieCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#ActionMovieCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+
+                <h2 class="text-white mt-4">Comedy Movies</h2>
+                <div id="ComedyMovieCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="comedyMoviesList"></div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#ComedyMovieCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#ComedyMovieCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+                <h2 class="text-white mt-4">Science-Fiction Movies</h2>
+                <div id="SciFiMovieCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="sciFiMoviesList"></div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#SciFiMovieCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#SciFiMovieCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4" id="moviesList"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const API_KEY = '{{ config('services.tmdb.api_key') }}';
         const BASE_URL = 'https://api.themoviedb.org/3';
-        const API_URL = `${BASE_URL}/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`;
         const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
         document.addEventListener("DOMContentLoaded", function() {
-            fetchMovies(API_URL);
+            fetchMovies(`${BASE_URL}/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`, 'popularMoviesList');
+            fetchMovies(`${BASE_URL}/discover/movie?with_genres=28&sort_by=popularity.desc&api_key=${API_KEY}`, 'actionMoviesList');
+            fetchMovies(`${BASE_URL}/discover/movie?with_genres=35&sort_by=popularity.desc&api_key=${API_KEY}`, 'comedyMoviesList');
+            fetchMovies(`${BASE_URL}/discover/movie?with_genres=878&sort_by=popularity.desc&api_key=${API_KEY}`, 'sciFiMoviesList');
+            
+            document.getElementById('searchForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const query = document.getElementById('searchInput').value;
+                if (query) {
+                    fetchMovies(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`, 'moviesList', true);
+                }
+            });
         });
 
-        function fetchMovies(url) {
+        function fetchMovies(url, listId, hideCarousels = false) {
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     if (data.results && data.results.length > 0) {
-                        displayMovies(data.results);
+                        displayMovies(data.results, listId, hideCarousels);
                     } else {
-                        console.error('No movies found:', data.status_message);
                         showError('No movies found.');
                     }
                 })
@@ -65,11 +130,17 @@
                 });
         }
 
-        function displayMovies(movies) {
-            const moviesList = document.getElementById('moviesList');
+        function displayMovies(movies, listId, hideCarousels) {
+            const moviesList = document.getElementById(listId);
             moviesList.innerHTML = '';
 
-            movies.forEach(movie => {
+            if (hideCarousels) {
+                document.getElementById('carousels').style.display = 'none';
+                document.getElementById('moviesList').style.display = 'flex';
+            }
+
+            let items = '';
+            movies.forEach((movie, index) => {
                 const movieCard = `
                     <div class="col-md-3 movie-card">
                         <div class="card h-100">
@@ -78,13 +149,20 @@
                             </a>
                             <div class="card-body movie-info">
                                 <h5 class="card-title">${movie.title}</h5>
-                                <span class="rating">${ movie.vote_average ? Math.round(movie.vote_average *10)/10: 'N/A'}</span>
+                                <span class="rating">${ movie.vote_average ? Math.round(movie.vote_average *10)/10 : 'N/A'}</span>
                             </div>
                         </div>
                     </div>
                 `;
-                moviesList.innerHTML += movieCard;
+
+                if (index % 4 === 0) {
+                    if (index !== 0) items += '</div></div>';
+                    items += `<div class="carousel-item ${index === 0 ? 'active' : ''}"><div class="row">`;
+                }
+                items += movieCard;
             });
+            items += '</div></div>';
+            moviesList.innerHTML = items;
         }
 
         function showError(message) {
