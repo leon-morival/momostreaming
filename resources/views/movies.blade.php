@@ -129,41 +129,63 @@
                     showError('Error fetching the movies. Please try again later.');
                 });
         }
-
         function displayMovies(movies, listId, hideCarousels) {
-            const moviesList = document.getElementById(listId);
-            moviesList.innerHTML = '';
+    const moviesList = document.getElementById(listId);
+    moviesList.innerHTML = '';
 
-            if (hideCarousels) {
-                document.getElementById('carousels').style.display = 'none';
-                document.getElementById('moviesList').style.display = 'flex';
-            }
+    if (hideCarousels) {
+        document.getElementById('carousels').style.display = 'none';
+        document.getElementById('moviesList').style.display = 'flex';
+    }
 
-            let items = '';
-            movies.forEach((movie, index) => {
-                const movieCard = `
-                    <div class="col-md-3 movie-card">
-                        <div class="card h-100">
-                            <a href="/play_movie/${movie.id}">
-                                <img src="${movie.poster_path ? IMG_URL + movie.poster_path : 'http://via.placeholder.com/1080x1580'}" class="card-img-top" alt="${movie.title}">
-                            </a>
-                            <div class="card-body movie-info">
-                                <h5 class="card-title">${movie.title}</h5>
-                                <span class="rating">${ movie.vote_average ? Math.round(movie.vote_average *10)/10 : 'N/A'}</span>
-                            </div>
+    let items = '';
+
+    if (hideCarousels) {
+        // Afficher tous les films trouvés lors de la recherche
+        movies.forEach((movie) => {
+            items += `
+                <div class="col-md-3 movie-card">
+                    <div class="card h-100">
+                        <a href="/play_movie/${movie.id}">
+                            <img src="${movie.poster_path ? IMG_URL + movie.poster_path : 'http://via.placeholder.com/1080x1580'}" class="card-img-top" alt="${movie.title}">
+                        </a>
+                        <div class="card-body movie-info">
+                            <h5 class="card-title">${movie.title}</h5>
+                            <span class="rating">${movie.vote_average ? Math.round(movie.vote_average * 10) / 10 : 'N/A'}</span>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
+        });
+    } else {
+        // Afficher les films en carousels
+        movies.forEach((movie, index) => {
+            const movieCard = `
+                <div class="col-md-3 movie-card">
+                    <div class="card h-100">
+                        <a href="/play_movie/${movie.id}">
+                            <img src="${movie.poster_path ? IMG_URL + movie.poster_path : 'http://via.placeholder.com/1080x1580'}" class="card-img-top" alt="${movie.title}">
+                        </a>
+                        <div class="card-body movie-info">
+                            <h5 class="card-title">${movie.title}</h5>
+                            <span class="rating">${ movie.vote_average ? Math.round(movie.vote_average *10)/10 : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-                if (index % 4 === 0) {
-                    if (index !== 0) items += '</div></div>';
-                    items += `<div class="carousel-item ${index === 0 ? 'active' : ''}"><div class="row">`;
-                }
-                items += movieCard;
-            });
-            items += '</div></div>';
-            moviesList.innerHTML = items;
-        }
+            if (index % 4 === 0) {
+                if (index !== 0) items += '</div></div>';
+                items += `<div class="carousel-item ${index === 0 ? 'active' : ''}"><div class="row">`;
+            }
+            items += movieCard;
+        });
+        items += '</div></div>';
+    }
+
+    moviesList.innerHTML = items;
+}
+
 
         function showError(message) {
             const moviesList = document.getElementById('moviesList');
