@@ -1,36 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play Movie</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <style>
-        .ratio-16x9 {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-        }
-        .ratio-16x9 iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .person-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-    </style>
-</head>
-<body>
-    @include('layouts.navbar')
-    <div class="container mt-4">
+@extends('layouts.app')
+@section('title', 'Home - Movie List')
+
+@section('content')
+    <div class="container mt-4 text-white">
         <h1 class="text-center" id="movieTitle">Play Movie</h1>
         <div class="row mt-4">
             <div class="col-md-2">
@@ -54,8 +26,8 @@
             </div>
             <div class="col-md-3">
                 {{-- Movie Information --}}
-                <div class="movie-info">
-                    <h5 class="mt-3 mb-3" id="movieTitleInfo"></h5>
+                <div>
+                    <h5 class="mb-3" id="movieTitleInfo"></h5>
                     {{-- Badges --}}
                     <div class="d-flex">
                         <span class="badge bg-danger" id="rated"></span>
@@ -164,5 +136,5 @@
             const API_KEY = "{{ config('services.tmdb.api_key') }}";
         </script>
         <script src="{{ asset('js/script.js') }}"></script>
-</body>
-</html>
+
+        @endsection
