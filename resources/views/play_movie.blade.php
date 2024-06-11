@@ -159,5 +159,10 @@
             };
         });
     </script>
+        <script>
+            // Pass the API key to the script
+            const API_KEY = "{{ config('services.tmdb.api_key') }}";
+        </script>
+        <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>
