@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container mt-4 text-white">
-        <h1 class="text-center" id="movieTitle">Play Movie</h1>
+        <h1 class="text-center" id="movieTitle"></h1>
         <div class="row mt-4">
             <div class="col-md-2">
                 <img id="movieImage" src="" class="img-fluid" alt="Movie Image">
@@ -15,11 +15,11 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <h5 class="text-center">Cast</h5>
+                        <h2 class="text-center">Cast</h2>
                         <ul id="movieCast" class="list-unstyled"></ul>
                     </div>
                     <div class="col-md-6">
-                        <h5 class="text-center">Directors</h5>
+                        <h2 class="text-center">Directors</h2>
                         <ul id="movieDirectors" class="list-unstyled"></ul>
                     </div>
                 </div>
