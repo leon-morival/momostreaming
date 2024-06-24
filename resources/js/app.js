@@ -81,7 +81,7 @@ function displayMovies(movies, listId, hideCarousels) {
         movies.forEach((movie) => {
             items += `
                 <div class="col-3">
-                    <div class="card h-100">
+                    <div class="card w-auto h-100">
                         <a href="/play_movie/${movie.id}">
                             <img src="${
                                 movie.poster_path
@@ -106,7 +106,7 @@ function displayMovies(movies, listId, hideCarousels) {
         movies.forEach((movie, index) => {
             const movieCard = `
                 <div class="col-3 p-1">
-                    <div class="card h-auto ">
+                    <div class="card w-auto h-100">
                         <a href="/play_movie/${movie.id}">
                             <img src="${
                                 movie.poster_path
