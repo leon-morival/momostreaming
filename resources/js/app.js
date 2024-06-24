@@ -80,14 +80,14 @@ function displayMovies(movies, listId, hideCarousels) {
         // Display all found movies for the search
         movies.forEach((movie) => {
             items += `
-                <div class="col-3  movie-card">
+                <div class="col-3">
                     <div class="card h-100">
                         <a href="/play_movie/${movie.id}">
                             <img src="${
                                 movie.poster_path
                                     ? IMG_URL + movie.poster_path
                                     : "http://via.placeholder.com/1080x1580"
-                            }" class="card-img-top" alt="${movie.title}">
+                            }"  alt="${movie.title}">
                         </a>
                         <div class="card-body movie-info">
                             <p class="card-title">${movie.title}</p>
@@ -105,14 +105,14 @@ function displayMovies(movies, listId, hideCarousels) {
         // Display movies in carousels
         movies.forEach((movie, index) => {
             const movieCard = `
-                <div class="col-3 movie-card p-1">
+                <div class="col-3 p-1">
                     <div class="card h-auto ">
                         <a href="/play_movie/${movie.id}">
                             <img src="${
                                 movie.poster_path
                                     ? IMG_URL + movie.poster_path
                                     : "http://via.placeholder.com/1080x1580"
-                            }" class="card-img-top" alt="${movie.title}">
+                            }" alt="${movie.title}">
                         </a>
                         <div class="card-body movie-info">
                             <h6 class="card-title">${movie.title}</h6>
