@@ -40,10 +40,7 @@
 .movie-card {
     margin-bottom: 30px;
 }
-.movie-card img {
-    width: 100%;
-    height: auto;
-}
+
 .movie-info {
     padding: 10px;
     background: rgba(0, 0, 0, 0.7);
