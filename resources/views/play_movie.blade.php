@@ -48,6 +48,31 @@
     </div>
 
     <script>
+        function saveUserProgress(userId, movieId, progress) {
+            fetch(`/api/save-progress`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token') // Include authorization if needed
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        movieId: movieId,
+                        progress: progress
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to save progress');
+                    }
+                    console.log('Progress saved successfully');
+                })
+                .catch(error => {
+                    console.error('Error saving progress:', error);
+                });
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const API_KEY = "{{ config('services.tmdb.api_key') }}";
             const movieId = '{{ $id }}';

@@ -3,6 +3,17 @@
 
 
     <div class="container pt-5">
+        {{-- dropDown --}}
+        <div class="flex items-center justify-end">
+            <label for="genre" class="mr-2 text-white text-xl">Select Genre:</label>
+            <select name="genre" id="genre"
+                class="px-3 py-1 text-sm border rounded-md focus:outline-none bg-gray-900 text-white">
+                @foreach ($genres as $name => $code)
+                    <option value="{{ $code }}" class="text-white">{{ $name }}</option>
+                @endforeach
+            </select>
+        </div>
+
 
 
 

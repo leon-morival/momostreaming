@@ -3,11 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\MoviesController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('movies');
-})->middleware('auth');
+Route::get('/', 
+[MoviesController::class, 'index'])->middleware('auth');
 
 
 Route::get('/play_movie/{id}', function ($id) {
