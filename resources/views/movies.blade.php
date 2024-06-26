@@ -1,8 +1,8 @@
-@extends('layouts.app')
-@section('title', 'Home - Movie List')
+{{-- @section('title', 'Home - Movie List') --}}
+<x-app-layout>
 
-@section('content')
-    <div class="container mt-5">
+
+    <div class="container pt-5">
 
 
 
@@ -77,4 +77,4 @@
         const API_KEY = "{{ config('services.tmdb.api_key') }}";
     </script>
     <script src="{{ asset('js/script.js') }}"></script>
-@endsection
+</x-app-layout>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Dynamic Title -->
-    <title>@yield('title', config('app.name', 'Laravel'))</title>
+    <title>@yield('title', config('app.name', 'MomoStreaming'))</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -16,9 +17,11 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
+@include('layouts.navigation')
+
 <body class="font-sans antialiased ">
     <div class="min-h-screen bg-slate-900">
-        @include('layouts.navigation')
 
         <!-- Page Heading -->
         @if (isset($header))
@@ -31,9 +34,11 @@
 
         <!-- Page Content -->
         <main>
-            @yield('content')
+            {{ $slot }}
+
 
         </main>
     </div>
 </body>
+
 </html>
