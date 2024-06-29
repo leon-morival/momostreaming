@@ -3,7 +3,7 @@
 
 
     <div class="container pt-5">
-        {{-- dropDown --}}
+        {{-- dropDown
         <div class="flex items-center justify-end">
             <label for="genre" class="mr-2 text-white text-xl">Select Genre:</label>
             <select name="genre" id="genre"
@@ -15,7 +15,7 @@
             <button type="submit" class="btn bg-white">
                 search
             </button>
-        </div>
+        </div> --}}
 
 
 
