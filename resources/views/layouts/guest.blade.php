@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans text-white ">
+<body class="font-sans  ">
     <div
         class="min-h-screen flex bg-gradient-to-r from-blue-300 to-slate-800 flex-col sm:justify-center items-center pt-6 sm:pt-0">
         <div>
@@ -27,7 +27,7 @@
 
 
         <div
-            class="w-full text-white sm:max-w-md mt-6 px-6 py-4 bg-gradient-to-r from-gray-400 to-slate-400 shadow-md overflow-hidden sm:rounded-lg">
+            class="w-full  sm:max-w-md mt-6 px-6 py-4 bg-gradient-to-r from-gray-400 to-slate-400 shadow-md overflow-hidden sm:rounded-lg">
             {{ $slot }}
 
         </div>
