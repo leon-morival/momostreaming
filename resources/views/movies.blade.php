@@ -1,4 +1,4 @@
-{{-- @section('title', 'Home - Movie List') --}}
+@section('title', 'Momostreaming')
 <x-app-layout>
 
 
@@ -12,6 +12,9 @@
                     <option value="{{ $code }}" class="text-white">{{ $name }}</option>
                 @endforeach
             </select>
+            <button type="submit" class="btn bg-white">
+                search
+            </button>
         </div>
 
 

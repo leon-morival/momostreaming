@@ -139,24 +139,7 @@
                     document.body.innerHTML = '<h1 class="text-center">Error fetching the movie details</h1>';
                 });
 
-            // Prevent iframe redirects
-            document.getElementById('moviePlayer').onload = function() {
-                const iframe = this;
-                const iframeWindow = iframe.contentWindow;
 
-                // Overwrite the window.open method in the iframe
-                iframeWindow.open = function() {
-                    console.log('Blocked an attempt to open a new window');
-                    return null;
-                };
-
-                // Overwrite the location property in the iframe
-                Object.defineProperty(iframeWindow, 'location', {
-                    set: function() {
-                        console.log('Blocked an attempt to change location');
-                    }
-                });
-            };
         });
     </script>
     <script>
